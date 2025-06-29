@@ -1,0 +1,26 @@
+name: Actualizar canciones populares
+
+on:
+  schedule:
+    - cron: '0 */8 * * *'  # cada 8 horas
+  workflow_dispatch:       # permite ejecutarlo manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependencias
+        run: npm install axios
+
+      - name: Ejecutar script para actualizar ranking
+        run: node updateTopSongs.js
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
